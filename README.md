@@ -1,0 +1,1 @@
+An demo using bedrock to analyse images uploaded to s3
