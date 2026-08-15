@@ -2,7 +2,7 @@
 ## No provider alias is needed — both Lambda functions run in ap-southeast-2.
 
 locals {
-  bedrock_inference_profile_arn = "arn:aws:bedrock:us-east-1:${var.aws_account_id}:inference-profile/us.meta.llama3-2-11b-instruct-v1:0"
+  bedrock_inference_profile_arn = "arn:aws:bedrock:us-east-1:${var.aws_account_id}:inference-profile/us.amazon.nova-lite-v1:0"
 }
 
 ## Role 1 — Processor Lambda (ap-southeast-2; calls Bedrock in us-east-1 via explicit region_name)
@@ -63,9 +63,9 @@ resource "aws_iam_role_policy" "lambda_processor" {
         Effect = "Allow"
         Action = "bedrock:InvokeModel"
         Resource = [
-          "arn:aws:bedrock:us-east-1::foundation-model/meta.llama3-2-11b-instruct-v1:0",
-          "arn:aws:bedrock:us-east-2::foundation-model/meta.llama3-2-11b-instruct-v1:0",
-          "arn:aws:bedrock:us-west-2::foundation-model/meta.llama3-2-11b-instruct-v1:0",
+          "arn:aws:bedrock:us-east-1::foundation-model/amazon.nova-lite-v1:0",
+          "arn:aws:bedrock:us-east-2::foundation-model/amazon.nova-lite-v1:0",
+          "arn:aws:bedrock:us-west-2::foundation-model/amazon.nova-lite-v1:0",
         ]
         Condition = {
           StringEquals = {

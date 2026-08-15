@@ -28,7 +28,7 @@ resource "aws_lambda_function" "bedrock_processor" {
     variables = {
       DYNAMODB_TABLE   = aws_dynamodb_table.jobs.name
       DYNAMODB_REGION  = var.primary_region
-      BEDROCK_MODEL_ID = "us.meta.llama3-2-11b-instruct-v1:0"
+      BEDROCK_MODEL_ID = "us.amazon.nova-lite-v1:0"
       S3_UPLOADS_BUCKET = aws_s3_bucket.uploads.bucket
       S3_REGION        = var.primary_region
     }

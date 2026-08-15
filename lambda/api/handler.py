@@ -5,6 +5,7 @@ import uuid
 from datetime import datetime, timedelta, timezone
 
 import boto3
+from botocore.config import Config
 
 DYNAMODB_TABLE = os.environ["DYNAMODB_TABLE"]
 UPLOADS_BUCKET = os.environ["UPLOADS_BUCKET"]
@@ -13,7 +14,12 @@ PRIMARY_REGION = os.environ.get("PRIMARY_REGION", "ap-southeast-2")
 ALLOWED_ORIGIN = os.environ.get("ALLOWED_ORIGIN", "*")
 
 dynamodb = boto3.client("dynamodb", region_name=PRIMARY_REGION)
-s3 = boto3.client("s3", region_name=PRIMARY_REGION)
+s3 = boto3.client(
+    "s3",
+    region_name=PRIMARY_REGION,
+    endpoint_url=f"https://s3.{PRIMARY_REGION}.amazonaws.com",
+    config=Config(signature_version="s3v4", s3={"addressing_style": "virtual"}),
+)
 
 CORS_HEADERS = {
     "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
@@ -148,7 +154,7 @@ def get_user_id(event) -> str:
         token,
         jwks,
         algorithms=["RS256"],
-        options={"verify_aud": False},
+        options={"verify_aud": False, "verify_at_hash": False},
     )
     return claims["sub"]
 
